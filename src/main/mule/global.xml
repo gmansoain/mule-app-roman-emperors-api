@@ -10,6 +10,6 @@ http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/m
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
 	<global-property doc:name="Global Property" doc:id="ab32b6ec-bcf7-4152-be48-8dd5264612f5" name="env" value="${env}" />
-	<api-gateway:autodiscovery apiId="${api_id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="2004a823-6965-4cf0-88b8-832fe1ed1bb4" flowRef="roman-emperors-api-main" />
+	<api-gateway:autodiscovery apiId="${api.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="2004a823-6965-4cf0-88b8-832fe1ed1bb4" flowRef="roman-emperors-api-main" />
 	<global-property doc:name="Global Property" doc:id="3add1fac-6398-4bba-9bc2-93581eea7d59" name="secure.key" value="${secure.key}" />
 </mule>
