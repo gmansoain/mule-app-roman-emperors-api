@@ -1,0 +1,6 @@
+db:
+  host: "cloud-services.demos.mulesoft.com"
+  port: "30522"
+  user: "admin"
+  password: "Leire_Francesca2022"
+  database: "ps-demo-db"
