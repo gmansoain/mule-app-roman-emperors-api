@@ -1,4 +1,4 @@
-name: Continuous Integration
+name: Build and Deploy to Dev
 
 # Controls when the workflow will run
 on:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build_And_Publish_To_Exchange:
     runs-on: ubuntu-latest
     environment: Development
     steps:
@@ -45,3 +45,43 @@ jobs:
       with:
           name: artifacts
           path: target/*.jar
+          
+          
+  deploy_To_Dev:
+    needs: build_And_Publish_To_Exchange
+    runs-on: ubuntu-latest
+    environment: Development
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - uses: actions/download-artifact@v3
+      with:
+        name: artifacts
+
+    - name: Deploy to Cloudhub DEV
+      env:
+        MULE_CLIENT_ID: ${{ secrets.MULE_CLIENT_ID }}
+        MULE_CLIENT_SECRET: ${{ secrets.MULE_CLIENT_SECRET }}
+        MULE_BG_ID: ${{ secrets.MULE_BG_ID }}
+        SECURE_KEY: ${{ secrets.SECURE_KEY }}
+        client_id: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_ID }}
+        client_secret: ${{ secrets.ANYPOINT_PLATFORM_CLIENT_SECRET }}
+        environment: ${{ vars.ENVIRONMENT }}
+        target: ${{ vars.TARGET }}
+        api_id: ${{ vars.API_ID }}
+        replicas: ${{ vars.REPLICAS }}
+        cores: ${{ vars.CORES }}
+        api_layer: ${{ vars.API_LAYER }}
+        app_env: ${{ vars.APP_ENV }}
+      run: |
+        artifactName=$(ls *.jar | head -1)
+        mvn clean -B deploy -DmuleDeploy -Dmule.artifact=$artifactName \
+        -s .maven/settings.xml

@@ -5,10 +5,11 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
 http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
-	<configuration-properties doc:name="Configuration properties" doc:id="cfa32af4-9221-4d42-a939-527b7d25b458" file="properties-prod.yaml" />
+	<configuration-properties doc:name="Configuration properties" doc:id="cfa32af4-9221-4d42-a939-527b7d25b458" file="properties-${env}.yaml" />
 	<db:config name="Database_Config_MYSQL" doc:name="Database Config" doc:id="22ddeff4-fb4b-4585-9e96-6dca3101fb64" >
 		<db:my-sql-connection host="${db.host}" port="${db.port}" user="${db.user}" password="${db.password}" database="${db.database}" />
 	</db:config>
-	<global-property doc:name="Global Property" doc:id="ab32b6ec-bcf7-4152-be48-8dd5264612f5" name="env" value="prod" />
-	<api-gateway:autodiscovery apiId="19258283" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="2004a823-6965-4cf0-88b8-832fe1ed1bb4" flowRef="roman-emperors-api-main" />
+	<global-property doc:name="Global Property" doc:id="ab32b6ec-bcf7-4152-be48-8dd5264612f5" name="env" value="${env}" />
+	<api-gateway:autodiscovery apiId="${api_id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="2004a823-6965-4cf0-88b8-832fe1ed1bb4" flowRef="roman-emperors-api-main" />
+	<global-property doc:name="Global Property" doc:id="3add1fac-6398-4bba-9bc2-93581eea7d59" name="secure.key" value="${secure.key}" />
 </mule>
